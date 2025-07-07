@@ -39,7 +39,32 @@ volumes:
 
 ```py
 
+version: '3.8'
 
+services:
+  oracle-db:
+    image: gvenzl/oracle-xe:21.3.0-slim
+    container_name: oracle
+    environment:
+      - ORACLE_PASSWORD=oracle
+      - ORACLE_DATABASE=db
+      - APP_USER=lele
+      - APP_USER_PASSWORD=lele123
+    ports:
+      - "1521:1521"
+    volumes:
+      - oracle-data:/opt/oracle/data
+      - ./init-scripts:/container-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "sqlplus", "-L", "lele/lele123@//localhost:1521/db", "AS", "SYSDBA", "@healthcheck.sql"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  oracle-data:
+    driver: local
 ```
 
 
