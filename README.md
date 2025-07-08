@@ -71,6 +71,8 @@ volumes:
 
 
 ```py
+docker exec -it oracle sqlplus lele/lele123@//localhost:1521/db
+CREATE TABLE users (user_id Number NOT NULL, name Varchar2(45) NOT NULL, age Number NOT NULL);
 
 
 ```
